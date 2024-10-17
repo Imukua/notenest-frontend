@@ -1,31 +1,19 @@
+"use client"
 import Link from "next/link"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { BookOpen, Edit3, Lock, Star, TrendingUp } from "lucide-react"
+import { Header } from "@/components/header/header"
+import { useRouter } from "next/navigation"
 
 export default function HomePage() {
+  const router = useRouter()
+  const handleSignUp = () => {
+    router.push('/signup')
+  }
   return (
     <div className="flex flex-col min-h-screen bg-slate-950 text-slate-50">
-      <header className="px-4 lg:px-6 h-16 flex items-center border-b border-slate-800">
-        <Link className="flex items-center justify-center" href="#">
-          <BookOpen className="h-5 w-5 text-blue-400" />
-          <span className="ml-2 text-xl font-semibold bg-gradient-to-r from-blue-400 to-blue-200 bg-clip-text text-transparent">NoteNest</span>
-        </Link>
-        <nav className="ml-auto flex gap-4 sm:gap-6">
-          <Link className="text-sm font-medium hover:text-blue-400" href="#">
-            Features
-          </Link>
-          <Link className="text-sm font-medium hover:text-blue-400" href="#">
-            Pricing
-          </Link>
-          <Link className="text-sm font-medium hover:text-blue-400" href="#">
-            About
-          </Link>
-        </nav>
-        <Button className="ml-4 rounded-lg" variant="outline">
-          Sign In
-        </Button>
-      </header>
+      <Header />
       <main className="flex-1">
         <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
           <div className="container px-4 md:px-6">
@@ -35,11 +23,11 @@ export default function HomePage() {
                   Capture Your Thoughts, Unleash Your Potential
                 </h1>
                 <p className="mx-auto max-w-[700px] text-slate-400 md:text-xl">
-                  JournalApp helps you reflect, grow, and achieve your goals through the power of daily journaling.
+                  NoteNest helps you reflect, grow, and achieve your goals through the power of daily journaling.
                 </p>
               </div>
               <div className="space-x-4">
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white">Get Started</Button>
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white" onClick={handleSignUp}>Get Started</Button>
               <Button variant="outline" className="text-blue-400 border-blue-400 hover:bg-blue-950">Learn More</Button>   
               </div>
               
