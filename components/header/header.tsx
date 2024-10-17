@@ -21,7 +21,7 @@ export const Header = () => {
           <Link className="text-sm font-medium hover:text-blue-400" href="#">
             Features
           </Link>
-          <Link className="text-sm font-medium hover:text-blue-400" href="#">
+          <Link className="text-sm font-medium hover:text-blue-400" href="/pricing">
             Pricing
           </Link>
           <Link className="text-sm font-medium hover:text-blue-400" href="#">
