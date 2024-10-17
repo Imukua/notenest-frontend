@@ -63,7 +63,7 @@ export default function PricingPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 text-slate-50 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 text-slate-50">
         <Header />
       <div className="max-w-7xl mx-auto mt-10">
         <div className="text-center">
