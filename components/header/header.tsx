@@ -18,13 +18,13 @@ export const Header = () => {
           <span className="ml-2 text-xl font-semibold bg-gradient-to-r from-blue-400 to-blue-200 bg-clip-text text-transparent">NoteNest</span>
         </Link>
         <nav className="ml-auto flex gap-4 sm:gap-6">
-          <Link className="text-sm font-medium hover:text-blue-400" href="#">
+          <Link className="text-sm font-medium hover:text-blue-400" href="/features">
             Features
           </Link>
           <Link className="text-sm font-medium hover:text-blue-400" href="/pricing">
             Pricing
           </Link>
-          <Link className="text-sm font-medium hover:text-blue-400" href="#">
+          <Link className="text-sm font-medium hover:text-blue-400" href="/about">
             About
           </Link>
         </nav>
