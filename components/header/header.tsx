@@ -25,7 +25,7 @@ export const Header = () => {
 
   return (
     <header className="px-4 lg:px-6 h-16 justify-between flex items-center border-b border-slate-800">
-      <Link className="flex items-center justify-center" href="/">
+      <Link className="flex items-center justify-center" href={isLoggedIn? "/dashboard": "/"}>
         <BookOpen className="h-6 w-6 text-blue-400" />
         <motion.span 
           className="ml-2 text-xl font-semibold bg-gradient-to-r from-blue-400 to-blue-200 bg-clip-text text-transparent"
@@ -46,9 +46,11 @@ export const Header = () => {
             <Button className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-slate-50">
               <PlusCircle className="h-4 w-4" />
             </Button>
-            <Button variant="outline" className="text-slate-300 border-slate-700 hover:bg-slate-700 hover:text-slate-50">
-              <User className="h-4 w-4" />
-            </Button>
+            <Link href="/account/edit">
+              <Button variant="outline"  className="text-slate-300 border-slate-700 hover:bg-slate-700 hover:text-slate-50">
+                <User className="h-4 w-4" />
+              </Button>
+            </Link>
           </div>
         )}
 
