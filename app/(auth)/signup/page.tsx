@@ -10,8 +10,13 @@ import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card"
 import { EyeIcon, EyeOffIcon, Loader2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Header } from '@/components/header/header'
+import { send } from 'process'
+import { useApi } from '@/hooks/useApi'
+import ApiMethod from '@/lib/types/types'
+import { Routes } from '@/lib/routes/routes'
+import { stat } from 'fs'
 
-export default function SignInPage() {
+export default function SignUpPage() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -23,6 +28,7 @@ export default function SignInPage() {
   const [isPasswordValid, setIsPasswordValid] = useState(false)
   const [iscPasswordValid, setIscPasswordValid] = useState(false)
   const router = useRouter()
+  const { sendRequest } = useApi()
 
   useEffect(() => {
     setIsUsernameValid(username.length >= 5)
@@ -30,17 +36,20 @@ export default function SignInPage() {
     setIscPasswordValid(cPassword.trim() === password.trim())
   }, [username, password, cPassword])
 
-  const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setError('')
     setIsLoading(true)
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 2000))
-      
-      throw new Error('Invalid credentials')
+      const {data, status} = await sendRequest(ApiMethod.POST, Routes.auth.signup, { username, password }) 
+      if (status === 200 ) {
+        router.push('/login')
+      } else {
+        throw new Error('Failed to sign up')
+      }
 
-   
+    
     } catch (err) {
       setError('username already exists!')
     } finally {
@@ -61,7 +70,7 @@ export default function SignInPage() {
             </h1>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSignIn} className="space-y-4">
+            <form onSubmit={handleSignUp} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="username" className="text-blue-200">Username</Label>
                 <Input
