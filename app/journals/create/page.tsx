@@ -93,7 +93,7 @@ export default function JournalEntryPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-100 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-slate-900 text-slate-100 px-4 sm:px-6 lg:px-8">
       <Header />
       <div className="max-w-3xl mx-auto mt-8">
         <h1 className="text-3xl font-bold text-cyan-400 mb-8">
