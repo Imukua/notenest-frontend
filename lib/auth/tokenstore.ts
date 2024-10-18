@@ -3,7 +3,7 @@ const refreshToken = "noteest.ref.tk";
 
 class TokenStore {
   static getAccessToken() {
-    return localStorage.getItem(accessToken);
+   return localStorage.getItem(accessToken);
   }
 
   static setAccessToken(token: string) {
