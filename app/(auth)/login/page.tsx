@@ -10,6 +10,10 @@ import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card"
 import { EyeIcon, EyeOffIcon, Loader2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Header } from '@/components/header/header'
+import { useApi } from '@/hooks/useApi'
+import { Routes } from '@/lib/routes/routes'
+import ApiMethod from '@/lib/types/types'
+import TokenStore from '@/lib/auth/tokenstore'
 
 export default function SignInPage() {
   const [username, setUsername] = useState('')
@@ -20,6 +24,7 @@ export default function SignInPage() {
   const [isUsernameValid, setIsUsernameValid] = useState(false)
   const [isPasswordValid, setIsPasswordValid] = useState(false)
   const router = useRouter()
+  const { sendRequest } = useApi(); 
 
   useEffect(() => {
     setIsUsernameValid(username.length >= 5)
@@ -33,14 +38,15 @@ export default function SignInPage() {
 
     try {
       // Simulating an API call
-      await new Promise(resolve => setTimeout(resolve, 2000))
-      
-      // For demonstration, let's assume the API returns an error
-      throw new Error('Invalid credentials')
 
-      // If authentication is successful, you would redirect here
-      // router.push('/')
+      const data = await sendRequest(ApiMethod.POST,Routes.auth.login,{username,password})
+
+      TokenStore.setAccessToken(data.accessToken)
+      TokenStore.setRefreshToken(data.refreshToken)
+      router.push('/dashboard')
+
     } catch (err) {
+      console.error(err)
       setError('Invalid username or password')
     } finally {
       setIsLoading(false)
