@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { BookOpen, Menu, X, Search, PlusCircle } from "lucide-react"
+import { BookOpen, Menu, X, Search, PlusCircle, User } from "lucide-react"
 import Link from "next/link"
 import { Button } from "../ui/button"
 import { useRouter } from "next/navigation"
@@ -10,7 +10,7 @@ import { motion, AnimatePresence } from "framer-motion"
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const [isLoggedIn, setIsLoggedIn] = useState(false) // State to track if logged in
+  const [isLoggedIn, setIsLoggedIn] = useState(true) // State to track if logged in
   const router = useRouter()
 
   const handleSignIn = () => {
@@ -45,6 +45,9 @@ export const Header = () => {
             </Button>
             <Button className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-slate-50">
               <PlusCircle className="h-4 w-4" />
+            </Button>
+            <Button variant="outline" className="text-slate-300 border-slate-700 hover:bg-slate-700 hover:text-slate-50">
+              <User className="h-4 w-4" />
             </Button>
           </div>
         )}
