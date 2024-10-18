@@ -40,12 +40,16 @@ export const Header = () => {
         {/* Search and Add Journal buttons always visible when logged in */}
         {isLoggedIn && (
           <div className="flex gap-4 mr-4">
-            <Button variant="outline" className="text-slate-300 border-slate-700 hover:bg-slate-700 hover:text-slate-50">
-              <Search className="h-4 w-4" />
-            </Button>
-            <Button className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-slate-50">
-              <PlusCircle className="h-4 w-4" />
-            </Button>
+            <Link href="/journals/list">
+              <Button variant="outline" className="text-slate-300 border-slate-700 hover:bg-slate-700 hover:text-slate-50">
+                <Search className="h-4 w-4" />
+              </Button>
+            </Link>
+            <Link href="/journals/create?mode=new">
+              <Button className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-slate-50">
+                <PlusCircle className="h-4 w-4" />
+              </Button>
+            </Link>
             <Link href="/account/edit">
               <Button variant="outline"  className="text-slate-300 border-slate-700 hover:bg-slate-700 hover:text-slate-50">
                 <User className="h-4 w-4" />
