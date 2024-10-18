@@ -11,7 +11,6 @@ const sendRequest = (
   authToken?: string | null,
   init?: RequestInit,
 ) => {
-  console.log(apiUrl + path);
   return fetch( "http://localhost:3000" + path, {
     method,
     ...(body && { body: JSON.stringify(body) }),
@@ -22,10 +21,13 @@ const sendRequest = (
       ...init?.headers,
     },
   }).then((response) => {
-    if (response.status >= 400) {
+    if (response.status >= 500) {
       throw response;
     }
-    return response.json();
+    return response.json().then((data) => ({
+      status: response.status,
+      data,
+    }));
   });
 };
 
