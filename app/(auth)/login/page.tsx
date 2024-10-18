@@ -50,7 +50,6 @@ export default function SignInPage() {
       }
 
     } catch (err) {
-      console.error(err)
       setError('Invalid username or password')
     } finally {
       setIsLoading(false)

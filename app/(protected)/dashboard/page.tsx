@@ -7,6 +7,7 @@ import { Search, PlusCircle, BookOpen, BarChart2, BookMarked, Briefcase, Plane }
 import { Header } from '@/components/header/header'
 import Link from 'next/link'
 
+
 type JournalEntry = {
   id: string
   title: string
@@ -21,7 +22,9 @@ type CategoryStat = {
   icon: React.ElementType
 }
 
-export default function Dashboard() {
+const Dashboard = () => {
+  
+
   const [journalEntries] = useState<JournalEntry[]>([
     {
       id: "1",
@@ -119,3 +122,5 @@ export default function Dashboard() {
     </div>
   )
 }
+
+export default Dashboard; // Wrap Dashboard with the HOC
