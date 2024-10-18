@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { Search, PlusCircle, BookOpen, BarChart2, BookMarked, Briefcase, Plane } from "lucide-react"
 import { Header } from '@/components/header/header'
+import Link from 'next/link'
 
 type JournalEntry = {
   id: string
@@ -92,9 +93,11 @@ export default function Dashboard() {
         <section>
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-xl font-semibold text-slate-50">Recent Journal Entries</h3>
-            <Button variant="outline" className="text-slate-300 border-slate-700 hover:bg-slate-700 hover:text-slate-50">
-              <BookOpen className="mr-2 h-4 w-4" /> View All Entries
-            </Button>
+            <Link href="/journals/list">
+              <Button variant="outline" className="text-slate-300 border-slate-700 hover:bg-slate-700 hover:text-slate-50">
+                <BookOpen className="mr-2 h-4 w-4" /> View All Entries
+              </Button>
+            </Link>
           </div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {journalEntries.map((entry) => (
