@@ -83,7 +83,7 @@ export default function JournalListPage() {
   }
 
   const handleEntryClick = (id: string) => {
-    router.push(`/journal/${id}`)
+    router.push(`/journals/${id}`)
   }
 
   const handlePageChange = (newPage: number) => {
