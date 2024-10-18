@@ -39,11 +39,15 @@ export default function SignInPage() {
     try {
       // Simulating an API call
 
-      const data = await sendRequest(ApiMethod.POST,Routes.auth.login,{username,password})
+      const {data,status} = await sendRequest(ApiMethod.POST,Routes.auth.login,{username,password})
 
-      TokenStore.setAccessToken(data.accessToken)
-      TokenStore.setRefreshToken(data.refreshToken)
-      router.push('/dashboard')
+      if (status === 201){
+        TokenStore.setAccessToken(data.accessToken)
+        TokenStore.setRefreshToken(data.refreshToken)
+        router.push('/dashboard')
+      }else{
+        throw new Error('Failed to sign in')
+      }
 
     } catch (err) {
       console.error(err)
