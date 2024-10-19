@@ -12,6 +12,7 @@ import { ApiMethod, JournalEntry } from '@/lib/types/types'
 import { Routes } from '@/lib/routes/routes'
 import { motion, AnimatePresence } from 'framer-motion'
 import { EmptyState } from '@/components/empty-space/empty-space'
+import JournalEntryCard from '@/components/journal/journalentry'
 
 export default function JournalListPage() {
   const router = useRouter()
@@ -59,7 +60,7 @@ export default function JournalListPage() {
   }
 
   const handleEntryClick = (id: string) => {
-    router.push(`/journals/${id}`)
+    router.push(`/journals/read?id=${id}`)
   }
 
   const handlePageChange = (newPage: number) => {
@@ -134,39 +135,11 @@ export default function JournalListPage() {
               className="space-y-6"
             >
               {data.entries.map((entry) => (
-                <motion.div
+                <JournalEntryCard
                   key={entry.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <Card 
-                    className="bg-slate-800 border-slate-700 hover:bg-slate-700 transition-all duration-300 cursor-pointer transform hover:scale-105 hover:shadow-lg"
-                    onClick={() => handleEntryClick(entry.id)}
-                  >
-                    <CardHeader>
-                      <CardTitle className="text-xl text-cyan-400 flex items-center">
-                        <BookOpen className="mr-2" size={20} />
-                        {entry.title}
-                      </CardTitle>
-                      <CardDescription className="text-slate-400">
-                        {new Date(entry.date).toLocaleDateString('en-GB', { 
-                          year: 'numeric', 
-                          month: 'long', 
-                          day: 'numeric' 
-                        })}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <span className="inline-block bg-gradient-to-r from-blue-600 to-cyan-400 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded text-slate-100 mb-2">
-                        {entry.category}
-                      </span>
-                      <p className="text-slate-300 line-clamp-3">
-                        {entry.content}
-                      </p>
-                    </CardContent>
-                  </Card>
-                </motion.div>
+                  entry={entry}
+                  onClick={handleEntryClick}
+                />
               ))}
             </motion.div>
           )}
