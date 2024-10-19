@@ -37,7 +37,6 @@ export default function SignInPage() {
     setIsLoading(true)
 
     try {
-      // Simulating an API call
 
       const {data,status} = await sendRequest(ApiMethod.POST,Routes.auth.login,{username,password})
 
