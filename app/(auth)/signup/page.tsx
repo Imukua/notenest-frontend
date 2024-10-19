@@ -10,11 +10,9 @@ import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card"
 import { EyeIcon, EyeOffIcon, Loader2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Header } from '@/components/header/header'
-import { send } from 'process'
 import { useApi } from '@/hooks/useApi'
-import ApiMethod from '@/lib/types/types'
+import {ApiMethod} from '@/lib/types/types'
 import { Routes } from '@/lib/routes/routes'
-import { stat } from 'fs'
 
 export default function SignUpPage() {
   const [username, setUsername] = useState('')

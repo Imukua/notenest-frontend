@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils"
 import { Header } from '@/components/header/header'
 import { useApi } from '@/hooks/useApi'
 import { Routes } from '@/lib/routes/routes'
-import ApiMethod from '@/lib/types/types'
+import {ApiMethod} from '@/lib/types/types'
 import TokenStore from '@/lib/auth/tokenstore'
 
 export default function SignInPage() {

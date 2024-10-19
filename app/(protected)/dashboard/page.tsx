@@ -3,15 +3,14 @@
 import { useEffect, useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
-import { Search, PlusCircle, BookOpen, BarChart2, BookMarked, Briefcase, Plane, Frown } from "lucide-react"
+import { PlusCircle, BookOpen, BarChart2, BookMarked, Briefcase, Plane, Frown } from "lucide-react"
 import { Header } from '@/components/header/header'
 import Link from 'next/link'
 import { useApi } from '@/hooks/useApi'
-import ApiMethod from '@/lib/types/types'
+import {ApiMethod} from '@/lib/types/types'
 import { Routes } from '@/lib/routes/routes'
 import { Skeleton } from "@/components/ui/skeleton"
 import { motion } from "framer-motion"
-import { userAgent } from 'next/server'
 import { useAuth } from '@/hooks/useAuth'
 
 type JournalEntry = {

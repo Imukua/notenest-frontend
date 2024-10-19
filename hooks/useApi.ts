@@ -1,5 +1,5 @@
 import TokenStore from "@/lib/auth/tokenstore";
-import ApiMethod  from "@/lib/types/types";
+import {ApiMethod}  from "@/lib/types/types";
 
 const apiUrl = process.env.API_BASE_URL;
 
