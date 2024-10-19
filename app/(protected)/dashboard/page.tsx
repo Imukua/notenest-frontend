@@ -1,20 +1,33 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { Search, PlusCircle, BookOpen, BarChart2, BookMarked, Briefcase, Plane } from "lucide-react"
 import { Header } from '@/components/header/header'
 import Link from 'next/link'
-
+import { useApi } from '@/hooks/useApi'
+import ApiMethod from '@/lib/types/types'
+import { Routes } from '@/lib/routes/routes'
+import { Skeleton } from "@/components/ui/skeleton"
 
 type JournalEntry = {
-  id: string
-  title: string
-  content: string
-  category: string
-  date: string
-}
+  entries: Array<{
+    id: string;
+    title: string;
+    content: string;
+    category: string;
+    date: string;
+  }>;
+  totalEntries: number;
+  nextPage: number | null;
+  categoryCounts: {
+    PersonalDevelopment: number;
+    Work: number;
+    Travel: number;
+  };
+};
+
 
 type CategoryStat = {
   category: string
@@ -23,38 +36,38 @@ type CategoryStat = {
 }
 
 const Dashboard = () => {
-  
-
-  const [journalEntries] = useState<JournalEntry[]>([
-    {
-      id: "1",
-      title: "Morning Reflections",
-      content: "A peaceful morning with thoughts about self-improvement.",
-      category: "Personal Development",
-      date: "October 12, 2024"
+  const { sendProtectedRequest } = useApi();
+  const [data, setData] = useState<JournalEntry>({
+    entries: [],
+    totalEntries: 0,
+    nextPage: null,
+    categoryCounts: {
+      PersonalDevelopment: 0,
+      Work: 0,
+      Travel: 0,
     },
-    {
-      id: "2",
-      title: "Tech Conference Insights",
-      content: "Learned a lot from the AI and Machine Learning sessions.",
-      category: "Work",
-      date: "October 15, 2024"
-    },
-    {
-      id: "3",
-      title: "Weekend Adventures",
-      content: "Explored the city and discovered new places to eat.",
-      category: "Travel",
-      date: "October 8, 2024"
-    }
-  ])
+  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const totalJournals = journalEntries.length
-  const categoryStats: CategoryStat[] = [
-    { category: "Personal Development", count: 1, icon: BookMarked },
-    { category: "Work", count: 1, icon: Briefcase },
-    { category: "Travel", count: 1, icon: Plane },
-  ]
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const response = await sendProtectedRequest(ApiMethod.GET, Routes.journals.dashboard);
+        setData(response.data);
+        console.log(response.data)
+      } catch (err) {
+        setError('Failed to fetch journal entries');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [sendProtectedRequest]);
+
+  const totalJournals = data.totalEntries;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 text-slate-50">
@@ -74,21 +87,31 @@ const Dashboard = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="flex items-center justify-between mb-4">
-                <p className="text-slate-300">Total Journals</p>
-                <p className="text-2xl font-bold text-cyan-400">{totalJournals}</p>
-              </div>
-              <div className="space-y-2">
-                {categoryStats.map(({ category, count, icon: Icon }) => (
-                  <div key={category} className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <Icon className="h-4 w-4 text-cyan-400 mr-2" />
-                      <span className="text-slate-300">{category}</span>
-                    </div>
-                    <span className="text-cyan-400 font-semibold">{count}</span>
+              {loading ? (
+                <>
+                  <Skeleton className="h-6 w-full mb-4  bg-slate-700" />
+                  <Skeleton className="h-4 w-3/4 mb-2  bg-slate-700" />
+                  <Skeleton className="h-4 w-1/2 mb-2  bg-slate-700" />
+                  <Skeleton className="h-4 w-2/3  bg-slate-700" />
+                </>
+              ) : (
+                <>
+                  <div className="flex items-center justify-between mb-4">
+                    <p className="text-slate-300">Total Journals</p>
+                    <p className="text-2xl font-bold text-cyan-400">{totalJournals}</p>
                   </div>
-                ))}
-              </div>
+                  <div className="space-y-2">
+                    {data.categoryCounts && Object.entries(data.categoryCounts).map(([category, count,]) => (
+                      <div key={category} className="flex items-center justify-between">
+                        <div className="flex items-center">
+                          <span className="text-slate-300">{category}</span>
+                        </div>
+                        <span className="text-cyan-400 font-semibold">{count}</span>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
             </CardContent>
           </Card>
         </section>
@@ -102,20 +125,56 @@ const Dashboard = () => {
               </Button>
             </Link>
           </div>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {journalEntries.map((entry) => (
-              <Card key={entry.id} className="bg-slate-800 border-slate-700 hover:border-slate-500 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/20">
-                <CardHeader>
-                  <CardTitle className="text-slate-50">{entry.title}</CardTitle>
-                  <CardDescription className="text-slate-400">
-                    <span className="text-cyan-400">{entry.category}</span> • {entry.date}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-slate-300">{entry.content.substring(0, 100)}...</p>
-                </CardContent>
-              </Card>
-            ))}
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {loading ? (
+              Array.from({ length: 4 }).map((_, index) => (
+                <Card key={index} className="bg-slate-800 border-slate-700">
+                  <CardHeader>
+                    <Skeleton className="h-6 w-3/4 mb-2  bg-slate-700" />
+                    <Skeleton className="h-4 w-1/2  bg-slate-700" />
+                  </CardHeader>
+                  <CardContent>
+                    <Skeleton className="h-4 w-full mb-2  bg-slate-700" />
+                    <Skeleton className="h-4 w-full mb-2 bg-slate-700"  />
+                    <Skeleton className="h-4 w-3/4  bg-slate-700" />
+                  </CardContent>
+                </Card>
+              ))
+            ) : error ? (
+              <div className="col-span-full text-center text-red-400">{error}</div>
+            ) : data?.entries && data.entries.length > 0 ? (
+              data.entries.map((entry) => (
+                <Card key={entry.id} className="bg-slate-800 border-slate-700 hover:border-slate-500 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/20">
+                  <CardHeader>
+                    <CardTitle className="text-slate-50">{entry.title}</CardTitle>
+                    <CardDescription className="text-slate-400">
+                      <span className="text-cyan-400">{entry.category}</span> • {entry.date}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-slate-300">{entry.content.substring(0, 100)}...</p>
+                  </CardContent>
+                </Card>
+              ))
+            ) : (
+              <div className="col-span-full flex flex-col items-center justify-center p-12 text-center">
+                <div className="rounded-full bg-slate-700 p-3 mb-4">
+                  <BookOpen className="h-6 w-6 text-cyan-400" />
+                </div>
+                <h3 className="text-xl font-semibold text-slate-200 mb-2">No Entries Yet</h3>
+                <p className="text-slate-400 mb-4">Start your journaling journey today!</p>
+                <Link href="/journals/new">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="text-cyan-400 border-cyan-400 hover:bg-cyan-400/10"
+                  >
+                    <PlusCircle className="mr-2 h-4 w-4" />
+                    Create New Entry
+                  </Button>
+                </Link>
+              </div>
+            )}
           </div>
         </section>
       </main>
@@ -123,4 +182,4 @@ const Dashboard = () => {
   )
 }
 
-export default Dashboard; // Wrap Dashboard with the HOC
+export default Dashboard;
