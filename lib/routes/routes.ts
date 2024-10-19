@@ -10,7 +10,7 @@ export class Routes {
     };
     public static readonly journals = {
         dashboard: '/journals?page=1&limit=4',
-        list: '/journals/list',
+        list: '/journals',
         create: '/journals/create',
         update: '/journals/update',
         delete: '/journals/delete',

@@ -7,38 +7,10 @@ import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { Loader2, ChevronLeft, ChevronRight } from "lucide-react"
 import { Header } from '@/components/header/header'
+import { useApi } from '@/hooks/useApi'
+import { ApiMethod, JournalEntry } from '@/lib/types/types'
+import { Routes } from '@/lib/routes/routes'
 
-type JournalEntry = {
-  id: string
-  title: string
-  content: string
-  category: string
-  date: string
-}
-
-const mockEntries: JournalEntry[] = [
-  {
-    "id": "1",
-    "title": "My First Day at Work",
-    "content": "Today was my first day at work, and I was feeling a mix of excitement and nervousness. The office environment...",
-    "category": "Work",
-    "date": "2024-10-16"
-  },
-  {
-    "id": "2",
-    "title": "A Beautiful Morning Walk",
-    "content": "I woke up early today and went for a walk in the park. The weather was perfect, and I could hear birds chirping...",
-    "category": "Personal",
-    "date": "2024-09-25"
-  },
-  {
-    "id": "3",
-    "title": "The Best Recipe for Pancakes",
-    "content": "If you love pancakes, you're going to want to try this recipe. I've made it several times, and it never fails to impress...",
-    "category": "Food",
-    "date": "2024-08-12"
-  }
-]
 
 export default function JournalListPage() {
   const router = useRouter()
@@ -48,33 +20,37 @@ export default function JournalListPage() {
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const [searchTerm, setSearchTerm] = useState('')
+  const{sendProtectedRequest} = useApi();
+  const [data, setData] = useState<JournalEntry>({
+    entries: [],
+    totalEntries: 0,
+    nextPage: null,
+    categoryCounts: {
+      PersonalDevelopment: 0,
+      Work: 0,
+      Travel: 0,
+    },
+  });
 
   useEffect(() => {
-    const search = searchParams.get('search') || ''
-    setSearchTerm(search)
-  }, [searchParams])
-
-  useEffect(() => {
-    const fetchEntries = async () => {
-      setIsLoading(true)
+    const fetchData = async () => {
       try {
-        // Simulating API call with mock data
-        await new Promise(resolve => setTimeout(resolve, 1000))
-        const filteredEntries = mockEntries.filter(entry =>
-          entry.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          entry.content.toLowerCase().includes(searchTerm.toLowerCase())
-        )
-        setEntries(filteredEntries)
-        setTotalPages(Math.ceil(filteredEntries.length / 10)) // Assuming 10 entries per page
-      } catch (error) {
-        console.error('Error fetching journal entries:', error)
+        setIsLoading(true);
+        const path = Routes.journals.list + "?" + searchParams.toString();
+        const response = await sendProtectedRequest(ApiMethod.GET, path);
+        setData(response.data);
+        console.log(response.data)
+      } catch (err) {
+        console.log(err);
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
-    }
+    };
 
-    fetchEntries()
-  }, [searchTerm])
+    fetchData();
+
+  }, [sendProtectedRequest,searchParams])
+
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
@@ -112,7 +88,7 @@ export default function JournalListPage() {
           </div>
         ) : (
           <div className="space-y-6">
-            {entries.map((entry) => (
+            {data.entries.map((entry) => (
               <Card 
                 key={entry.id} 
                 className="bg-slate-800 border-slate-700 hover:bg-slate-700 transition-colors cursor-pointer"
