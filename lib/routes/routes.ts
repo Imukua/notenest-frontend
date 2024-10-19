@@ -15,5 +15,6 @@ export class Routes {
         create: '/journals/create',
         update: '/journals/update',
         delete: '/journals/delete',
+        all: '/journals/list',
     };
 }
