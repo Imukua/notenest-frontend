@@ -7,28 +7,12 @@ import { PlusCircle, BookOpen, BarChart2, BookMarked, Briefcase, Plane, Frown } 
 import { Header } from '@/components/header/header'
 import Link from 'next/link'
 import { useApi } from '@/hooks/useApi'
-import {ApiMethod} from '@/lib/types/types'
+import {ApiMethod, JournalEntry} from '@/lib/types/types'
 import { Routes } from '@/lib/routes/routes'
 import { Skeleton } from "@/components/ui/skeleton"
 import { motion } from "framer-motion"
 import { useAuth } from '@/hooks/useAuth'
 
-type JournalEntry = {
-  entries: Array<{
-    id: string;
-    title: string;
-    content: string;
-    category: string;
-    date: string;
-  }>;
-  totalEntries: number;
-  nextPage: number | null;
-  categoryCounts: {
-    PersonalDevelopment: number;
-    Work: number;
-    Travel: number;
-  };
-};
 
 const Dashboard = () => {
   const { sendProtectedRequest } = useApi();
