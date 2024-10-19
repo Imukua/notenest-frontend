@@ -85,7 +85,7 @@ export default function JournalView() {
       setIsDeleteDialogOpen(false)
     } finally {
       setIsDeleting(false)
-      router.push(Routes.journals.list)
+      router.push(Routes.journals.all)
     }
   }
 
