@@ -51,7 +51,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setUser(decodedUser);
         setAccessToken(token);
         setIsAuthenticated(true);
-        console.log('User is authenticated:', decodedUser);
         setLoading(false); // Set loading to false after trying to decode the token
 
       } catch (error) {
