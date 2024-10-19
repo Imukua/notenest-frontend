@@ -9,15 +9,24 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { AlertCircle, Check, Upload } from "lucide-react"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Header } from '@/components/header/header'
+import {ApiMethod, JournalEntry} from '@/lib/types/types'
+import { Routes } from '@/lib/routes/routes'
+import { useApi } from '@/hooks/useApi'
+import { useAuth } from '@/hooks/useAuth'
+
 
 export default function EditUserDetails() {
-  const [username, setUsername] = useState('')
+  const {user} = useAuth();
+  const [username, setUsername] = useState(user?.username || '')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [avatarSrc, setAvatarSrc] = useState('/placeholder.svg?height=100&width=100')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
   const [errors, setErrors] = useState({ username: '', password: '', confirmPassword: '' })
+  const { sendProtectedRequest } = useApi();
+ 
+
 
   const isFormValid = username.length >= 5 && (password === '' || (password !== '' && password === confirmPassword))
 
@@ -40,15 +49,20 @@ export default function EditUserDetails() {
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
+
     e.preventDefault()
     if (!isFormValid) return
 
+
     setIsSubmitting(true)
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500))
+    const response = await sendProtectedRequest(ApiMethod.PATCH, Routes.auth.profile, {username, password});
+    console.log(response)
+    
     setIsSubmitting(false)
     setShowSuccess(true)
     setTimeout(() => setShowSuccess(false), 3000)
+    
+
   }
 
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
