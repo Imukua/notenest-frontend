@@ -5,7 +5,7 @@ import { createContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/navigation'
 import { jwtDecode } from 'jwt-decode';
 import TokenStore from '@/lib/auth/tokenstore';
-import ApiMethod from '@/lib/types/types';
+import {ApiMethod} from '@/lib/types/types';
 import { useApi } from '@/hooks/useApi';
 import { Routes } from '@/lib/routes/routes';
 import Loading from '@/components/loading/loading';
@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
  
   useEffect(() => {
-    const token = localStorage.getItem('notenest.acc.tk');
+    const token = TokenStore.getAccessToken();
 
     if (token !== null) {
       try {
