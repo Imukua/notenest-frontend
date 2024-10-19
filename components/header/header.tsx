@@ -1,17 +1,21 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { BookOpen, Menu, X, Search, PlusCircle, User } from "lucide-react"
+import { BookOpen, Menu, X, Search, PlusCircle, User, LogOut } from "lucide-react"
 import Link from "next/link"
 import { Button } from "../ui/button"
 import { useRouter } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
+import { useAuth } from "@/hooks/useAuth"
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog"
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
-  const [isLoggedIn, setIsLoggedIn] = useState(true) // State to track if logged in
   const router = useRouter()
+  const {isAuthenticated, logoutUser} = useAuth()
+  const [isLoggedIn, setIsLoggedIn] = useState(isAuthenticated)
+  const [open, setOpen] = useState(false)
+
 
   const handleSignIn = () => {
     router.push('/login')
@@ -19,6 +23,11 @@ export const Header = () => {
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
+  }
+
+  const handleLogout = () => {
+    logoutUser()
+    setOpen(false)
   }
 
 
@@ -55,6 +64,25 @@ export const Header = () => {
                 <User className="h-4 w-4" />
               </Button>
             </Link>
+            <AlertDialog open={open} onOpenChange={setOpen}>
+              <AlertDialogTrigger asChild>
+                <Button variant="outline" className="text-slate-300 border-2 border-transparent bg-gradient-to-r from-red-500 to-pink-500 bg-clip-border hover:from-red-600 hover:to-pink-600">
+                  <LogOut className="h-4 w-4" />
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent className="bg-slate-800 border-slate-700">
+                <AlertDialogHeader>
+                  <AlertDialogTitle className="text-slate-50">Confirm Logout</AlertDialogTitle>
+                  <AlertDialogDescription className="text-slate-300">
+                    Are you sure you want to log out of your account?
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel className="bg-slate-700 text-slate-50 hover:bg-slate-600">Cancel</AlertDialogCancel>
+                  <AlertDialogAction onClick={handleLogout} className="bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600">Logout</AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
         )}
 
