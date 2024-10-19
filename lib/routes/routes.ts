@@ -7,6 +7,7 @@ export class Routes {
         refreshTokens: '/auth/refresh',
         logout: '/auth/logout',
         me: '/auth/me',
+        profile: '/auth/profile',
     };
     public static readonly journals = {
         dashboard: '/journals?page=1&limit=4',
