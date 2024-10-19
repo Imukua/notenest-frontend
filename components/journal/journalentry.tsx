@@ -42,10 +42,12 @@ export default function JournalEntryCard({ entry, onClick, maxLines = 2, classNa
             })}
           </CardDescription>
         </CardHeader>
-        <CardContent className="flex-grow flex flex-col">
-          <span className="inline-block bg-gradient-to-r from-blue-600 to-cyan-400 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded text-slate-100 mb-2">
-            {entry.category}
-          </span>
+        <CardContent className=" flex flex-col flex-grow">
+        <div className="mb-2">
+            <span className="inline-block bg-gradient-to-r from-blue-600 to-cyan-400 text-xs font-semibold px-2 py-0.5 rounded text-slate-100">
+              {entry.category}
+            </span>
+          </div>
           <p 
             className="text-slate-300 overflow-hidden"
             style={{
