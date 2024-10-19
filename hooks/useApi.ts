@@ -10,7 +10,7 @@ const sendRequest = (
   body?: any,
   authToken?: string | null,
   init?: RequestInit,
-) => {
+) => {  
   return fetch( "http://localhost:3000" + path, {
     method,
     ...(body && { body: JSON.stringify(body) }),
@@ -21,6 +21,7 @@ const sendRequest = (
       ...init?.headers,
     },
   }).then((response) => {
+    
     if (response.status >= 500) {
       throw response;
     }

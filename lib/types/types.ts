@@ -16,12 +16,21 @@
       date: string;
     }>;
     totalEntries: number;
-    nextPage: number | null;
+    hasNextPage: Boolean;
+    totalPages: number;
     categoryCounts: {
       PersonalDevelopment: number;
       Work: number;
       Travel: number;
     };
+  };
+
+  export type SingleJournalEntry = {
+    id?: string;
+    title: string;
+    content: string;
+    category: string;
+    date?: string;
   };
 
 
