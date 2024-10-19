@@ -20,7 +20,8 @@ const Dashboard = () => {
   const [data, setData] = useState<JournalEntry>({
     entries: [],
     totalEntries: 0,
-    nextPage: null,
+    hasNextPage: false,
+    totalPages: 0,
     categoryCounts: {
       PersonalDevelopment: 0,
       Work: 0,
