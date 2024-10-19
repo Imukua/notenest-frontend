@@ -12,6 +12,8 @@ import { Routes } from '@/lib/routes/routes'
 import { Skeleton } from "@/components/ui/skeleton"
 import { motion } from "framer-motion"
 import { useAuth } from '@/hooks/useAuth'
+import JournalEntryCard from '@/components/journal/journalentry'
+import { useRouter } from 'next/navigation'
 
 
 const Dashboard = () => {
@@ -30,6 +32,7 @@ const Dashboard = () => {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,6 +50,9 @@ const Dashboard = () => {
     fetchData();
   }, [sendProtectedRequest]);
 
+  const handleEntryClick = (id: string) => {
+    router.push(`/journals/read?id=${id}`)
+  }
   const totalJournals = data.totalEntries;
 
   return (
@@ -152,17 +158,11 @@ const Dashboard = () => {
               <div className="col-span-full text-center text-red-400 text-xl">{error}</div>
             ) : data?.entries && data.entries.length > 0 ? (
               data.entries.map((entry) => (
-                <Card key={entry.id} className="bg-slate-800/50 backdrop-blur-sm border-slate-700 hover:border-cyan-500 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/20">
-                  <CardHeader>
-                    <CardTitle className="text-xl font-semibold text-slate-100">{entry.title}</CardTitle>
-                    <CardDescription className="text-slate-400">
-                      <span className="text-cyan-400">{entry.category}</span> • {entry.date}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-slate-300 line-clamp-3">{entry.content}</p>
-                  </CardContent>
-                </Card>
+                <JournalEntryCard
+                  key={entry.id}
+                  entry={entry}
+                  onClick={handleEntryClick}
+                />
               ))
             ) : (
               <div className="col-span-full flex flex-col items-center justify-center p-12 text-center">
