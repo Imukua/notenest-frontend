@@ -54,7 +54,7 @@ export const Header = () => {
                 <Search className="h-4 w-4" />
               </Button>
             </Link>
-            <Link href="/journals/create?mode=new">
+            <Link href="/journals/create">
               <Button className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-slate-50">
                 <PlusCircle className="h-4 w-4" />
               </Button>
