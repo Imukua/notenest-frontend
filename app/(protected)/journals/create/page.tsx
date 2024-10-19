@@ -10,43 +10,46 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Loader2, AlertCircle, CheckCircle2 } from "lucide-react"
 import { Header } from '@/components/header/header'
+import { ApiMethod, SingleJournalEntry } from '@/lib/types/types'
+import { Routes } from '@/lib/routes/routes'
+import { useApi } from '@/hooks/useApi'
 
-type JournalEntry = {
-  id?: string
-  title: string
-  content: string
-  category: string
-}
 
 export default function JournalEntryPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const journalId = searchParams.get('id')
 
-  const [entry, setEntry] = useState<JournalEntry>({
+  const [entry, setEntry] = useState<SingleJournalEntry>({
     title: '',
     content: '',
     category: ''
   })
   const [isLoading, setIsLoading] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
-  const [errors, setErrors] = useState<Partial<JournalEntry>>({})
+  const [errors, setErrors] = useState<Partial<SingleJournalEntry>>({})
   const [saveStatus, setSaveStatus] = useState<'idle' | 'success' | 'error'>('idle')
+  const { sendProtectedRequest } = useApi();
+
 
   useEffect(() => {
-    if (journalId) {
-      setIsLoading(true)
-      // Simulate API call to fetch existing journal entry
-      setTimeout(() => {
-        setEntry({
-          id: journalId,
-          title: 'My Existing Journal Entry',
-          content: 'This is the content of my existing journal entry...',
-          category: 'Personal'
-        })
-        setIsLoading(false)
-      }, 1000)
-    }
+    const fetchData = async () => {
+      if (journalId !== null) {
+        try {
+          setIsLoading(true);
+          const path = Routes.journals.list + "/" + journalId;
+          console.log(path);
+          const response = await sendProtectedRequest(ApiMethod.GET, path);
+          setEntry(response.data);
+        } catch (err) {
+          // Handle error if needed
+        } finally {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    fetchData();
   }, [journalId])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -61,7 +64,7 @@ export default function JournalEntryPage() {
   }
 
   const validateForm = () => {
-    const newErrors: Partial<JournalEntry> = {}
+    const newErrors: Partial<SingleJournalEntry> = {}
     if (!entry.title.trim()) newErrors.title = 'Title is required'
     if (!entry.content.trim()) newErrors.content = 'Content is required'
     if (!entry.category) newErrors.category = 'Category is required'
@@ -71,13 +74,38 @@ export default function JournalEntryPage() {
 
   const handleSave = async () => {
     if (!validateForm()) return
+    try {
+      setIsSaving(true);
+      let path: string;
+      let method: ApiMethod;
 
-    setIsSaving(true)
-    // Simulate API call to save journal entry
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    setIsSaving(false)
-    setSaveStatus('success')
-    setTimeout(() => setSaveStatus('idle'), 3000)
+      if (journalId) {
+        path = Routes.journals + "/" + journalId;
+        method = ApiMethod.PATCH;
+      } else {
+        path = Routes.journals.create;
+        method = ApiMethod.POST;
+      }
+      const title = entry.title;
+      const content = entry.content;
+      const category = entry.category;
+
+      const {data,status} = await sendProtectedRequest(method, path, { title, content, category }); 
+      
+      if (status === 200 || status === 201) {
+        setSaveStatus('success');
+        setEntry({ title: '', content: '', category: '' });
+      } else {
+        setSaveStatus('error');
+      }
+    } catch (err) {
+      setSaveStatus('error');
+    } finally {
+      setIsLoading(false);
+      setIsSaving(false);
+    }
+
+    
   }
 
   const handleCancel = () => {
