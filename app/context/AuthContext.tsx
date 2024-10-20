@@ -9,7 +9,6 @@ import { useApi } from '@/hooks/useApi';
 import { Routes } from '@/lib/routes/routes';
 import Loading from '@/components/loading/loading';
 
-const { sendRequest } = useApi();
 
 const AuthContext = createContext<ContextType>({
   isAuthenticated: false,
@@ -19,6 +18,7 @@ const AuthContext = createContext<ContextType>({
   user: null,
   loading: true,
 });
+const { sendRequest } = useApi();
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [accessToken, setAccessToken] = useState<string | null>(null);
