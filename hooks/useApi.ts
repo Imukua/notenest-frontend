@@ -45,7 +45,6 @@ const sendRequest = async (
     });
   };
 
-  console.log("Base URL", apiUrl);
 
   let response = await fetchRequest(authToken ?? null);
 
@@ -63,7 +62,10 @@ const sendRequest = async (
     throw response;
   }
 
-  const data = await response.json();
+  const isJsonResponse = response.headers.get('content-type')?.includes('application/json');
+
+  // Check if the response body exists and is valid JSON
+  const data = isJsonResponse && response.ok ? await response.json() : null;
   return {
     status: response.status,
     data,
