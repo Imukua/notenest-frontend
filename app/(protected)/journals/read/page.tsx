@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import { Pencil, Trash2, AlertCircle, Loader2 } from 'lucide-react'
+import { Pencil, Trash2, AlertCircle, Loader2, CheckCircle } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import {
@@ -26,6 +26,7 @@ export default function JournalView() {
   const [displayedContent, setDisplayedContent] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [deleteStatus, setDeleteStatus] = useState<{ success: boolean; message: string } | null>(null)
   const { sendProtectedRequest } = useApi()
   const params = useSearchParams()
   const journalId = params.get('id')
@@ -52,7 +53,6 @@ export default function JournalView() {
     fetchData()
   }, [journalId, sendProtectedRequest])
 
-  // Variation 1: Fade-in effect
   useEffect(() => {
     if (entry) {
       setDisplayedContent("")
@@ -70,19 +70,23 @@ export default function JournalView() {
 
   const handleDelete = async () => {
     setIsDeleting(true)
+    setDeleteStatus(null)
     try {
-      const response = await sendProtectedRequest(ApiMethod.DELETE, `${Routes.journals.list}/${journalId}`)
-      if (response.status === 200) {
-        setIsDeleteDialogOpen(false)
+      const {status} = await sendProtectedRequest(ApiMethod.DELETE, `${Routes.journals.list}/${journalId}`)
+      if (status === 200) {
+        setDeleteStatus({ success: true, message: "Journal entry deleted successfully" })
+        setTimeout(() => {
+          setIsDeleteDialogOpen(false)
+          router.push(Routes.journals.all)
+        }, 2000)
       } else {
         throw new Error("Failed to delete journal entry")
       }
     } catch (err) {
       console.log(err)
-      setIsDeleteDialogOpen(false)
+      setDeleteStatus({ success: false, message: "Failed to delete journal entry. Please try again." })
     } finally {
       setIsDeleting(false)
-      router.push(Routes.journals.all)
     }
   }
 
@@ -191,6 +195,23 @@ export default function JournalView() {
                 This action will permanently delete your journal entry!
               </DialogDescription>
             </DialogHeader>
+            {deleteStatus && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+                className={`p-4 rounded-md ${deleteStatus.success ? 'bg-green-600' : 'bg-red-600'}`}
+              >
+                <div className="flex items-center">
+                  {deleteStatus.success ? (
+                    <CheckCircle className="h-6 w-6 mr-2" />
+                  ) : (
+                    <AlertCircle className="h-6 w-6 mr-2" />
+                  )}
+                  <p>{deleteStatus.message}</p>
+                </div>
+              </motion.div>
+            )}
             <DialogFooter className="mt-6 space-x-2 flex justify-center">
               <Button variant="outline" onClick={() => setIsDeleteDialogOpen(false)}
                 className="bg-slate-800 text-slate-100 hover:bg-slate-700 transition-all duration-200">
