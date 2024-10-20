@@ -41,7 +41,7 @@ export default function SignUpPage() {
 
     try {
       const {status} = await sendRequest(ApiMethod.POST, Routes.auth.signup, { username, password }) 
-      if (status === 200 ) {
+      if (status === 200 || status === 201) {
         router.push('/login')
       } else {
         throw new Error('Failed to sign up')
