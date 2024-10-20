@@ -16,7 +16,7 @@ export function EmptyState({ onAddEntry }: EmptyStateProps) {
     >
       <Frown className="w-16 h-16 text-slate-400" />
       <h2 className="text-2xl font-semibold text-slate-200">No Entries Found</h2>
-      <p className="text-slate-400 text-center">It looks like you haven't added any journal entries yet.</p>
+      <p className="text-slate-400 text-center">It looks like you haven&apos;t added any journal entries yet.</p>
       <Button onClick={onAddEntry} className="mt-4 bg-cyan-500 hover:bg-cyan-600 text-white">
         <PlusCircle className="mr-2 h-4 w-4" />
         Add New Entry
