@@ -14,7 +14,11 @@ const { sendRequest } = useApi();
 
 type UserType = {
   username: string;
-  // Add other fields from the JWT payload as necessary
+  createdAt:string;
+  updatedAt:string;
+  id: string;
+  exp: number;
+  iat: number;
 };
 
 type ContextType = {
@@ -48,22 +52,32 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     if (token !== null) {
       try {
         const decodedUser = jwtDecode<UserType>(token);
-        setUser(decodedUser);
-        setAccessToken(token);
-        setIsAuthenticated(true);
-        setLoading(false); // Set loading to false after trying to decode the token
-
+        const currentTime = Math.floor(Date.now() / 1000)
+        if (decodedUser.exp && decodedUser.exp > currentTime) {
+          // Token is valid
+          setUser(decodedUser);
+          setAccessToken(token);
+          setIsAuthenticated(true);
+        } else {
+          // Token is expired
+          TokenStore.removeAccessToken();
+          setUser(null);
+          setIsAuthenticated(false);
+          router.push('/login'); // Redirect to login if token is expired
+        }
       } catch (error) {
         // If the token is invalid, remove it and log the user out
         TokenStore.removeAccessToken();
-        setAccessToken(null);
         setUser(null);
+        setIsAuthenticated(false);
+        router.push('/login');
       }
     }else {
       setIsAuthenticated(false);
       router.push('/login');
 
     }
+    setLoading(false);
 
   }, []);
 
