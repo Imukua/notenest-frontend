@@ -4,21 +4,17 @@ import { createContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 import { jwtDecode } from 'jwt-decode';
 import TokenStore from '@/lib/auth/tokenstore';
-import { ApiMethod, UserType, ContextType } from '@/lib/types/types';
-import { useApi } from '@/hooks/useApi';
-import { Routes } from '@/lib/routes/routes';
+import { UserType, ContextType } from '@/lib/types/types';
 import Loading from '@/components/loading/loading';
 
 
 const AuthContext = createContext<ContextType>({
   isAuthenticated: false,
-  loginUser: async () => {},
   logoutUser: () => {},
   accessToken: null,
   user: null,
   loading: true,
 });
-const { sendRequest } = useApi();
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [accessToken, setAccessToken] = useState<string | null>(null);
@@ -57,28 +53,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [loading, isAuthenticated, router]);
 
-  const loginUser = async (username: string, password: string) => {
-    setLoading(true);
-    try {
-      const { data, status } = await sendRequest(ApiMethod.POST, Routes.auth.login, { username, password });
 
-      if (status === 200) {
-        TokenStore.setAccessToken(data.accessToken);
-        TokenStore.setRefreshToken(data.refreshToken);
-        setAccessToken(data.accessToken);
-        setUser(jwtDecode<UserType>(data.accessToken));
-        setIsAuthenticated(true);
-        router.push('/dashboard');
-      } else {
-        throw new Error('Failed to sign in');
-      }
-    } catch (err) {
-      console.error(err);
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const logoutUser = () => {
     TokenStore.removeAccessToken();
@@ -93,7 +68,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ user, accessToken, loginUser, logoutUser, isAuthenticated, loading }}>
+    <AuthContext.Provider value={{ user, accessToken, logoutUser, isAuthenticated, loading }}>
       {children}
     </AuthContext.Provider>
   );
