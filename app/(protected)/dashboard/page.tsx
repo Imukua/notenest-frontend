@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { Button } from "@/components/ui/button"
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { PlusCircle, BookOpen, BarChart2, BookMarked, Briefcase, Plane, Frown } from "lucide-react"
 import { Header } from '@/components/header/header'
 import Link from 'next/link'
@@ -41,6 +41,7 @@ const Dashboard = () => {
         const response = await sendProtectedRequest(ApiMethod.GET, Routes.journals.dashboard);
         setData(response.data);
       } catch (err) {
+        console.error(err);
         setError('Failed to fetch journal entries');
       } finally {
         setLoading(false);
@@ -94,7 +95,7 @@ const Dashboard = () => {
                 <div className="text-center py-8">
                   <Frown className="h-16 w-16 text-slate-400 mx-auto mb-4" />
                   <p className="text-xl text-slate-300 mb-6">No journal entries yet</p>
-                  <Link href="/journals/new">
+                  <Link href="/journals/create">
                     <Button className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white hover:from-cyan-600 hover:to-blue-600 transition-all duration-300">
                       <PlusCircle className="h-5 w-5 mr-2" />
                       Create your first entry

@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
-import { Loader2, ChevronLeft, ChevronRight, Search, BookOpen } from "lucide-react"
+import { Card, CardHeader, CardContent } from "@/components/ui/card"
+import { ChevronLeft, ChevronRight, Search } from "lucide-react"
 import { Header } from '@/components/header/header'
 import { useApi } from '@/hooks/useApi'
 import { ApiMethod, JournalEntry } from '@/lib/types/types'

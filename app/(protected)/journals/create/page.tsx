@@ -42,7 +42,7 @@ export default function JournalEntryPage() {
           const response = await sendProtectedRequest(ApiMethod.GET, path);
           setEntry(response.data);
         } catch (err) {
-          // Handle error if needed
+          console.log(err);
         } finally {
           setIsLoading(false);
         }
@@ -94,7 +94,7 @@ export default function JournalEntryPage() {
       const content = entry.content;
       const category = entry.category;
 
-      const {data,status} = await sendProtectedRequest(method, path, { title, content, category }); 
+      const {status} = await sendProtectedRequest(method, path, { title, content, category }); 
 
       
       if (status === 200 || status === 201) {
@@ -104,6 +104,7 @@ export default function JournalEntryPage() {
         setSaveStatus('error');
       }
     } catch (err) {
+      console.log(err);
       setSaveStatus('error');
     } finally {
       setIsLoading(false);

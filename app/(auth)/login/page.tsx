@@ -49,6 +49,7 @@ export default function SignInPage() {
       }
 
     } catch (err) {
+      console.log(err)
       setError('Invalid username or password')
       setIsLoading(false)
   }
@@ -151,7 +152,7 @@ export default function SignInPage() {
           </CardContent>
           <CardFooter>
             <p className="text-center text-sm text-blue-200 w-full">
-              Don't have an account?{' '}
+              Don&apos;t have an account?{' '}
               <Link href="/signup" className="text-cyan-400 hover:underline">
                 Sign up
               </Link>

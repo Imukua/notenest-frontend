@@ -16,7 +16,7 @@
       date: string;
     }>;
     totalEntries: number;
-    hasNextPage: Boolean;
+    hasNextPage: boolean;
     totalPages: number;
     categoryCounts: {
       PersonalDevelopment: number;

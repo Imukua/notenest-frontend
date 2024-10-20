@@ -40,7 +40,7 @@ export default function SignUpPage() {
     setIsLoading(true)
 
     try {
-      const {data, status} = await sendRequest(ApiMethod.POST, Routes.auth.signup, { username, password }) 
+      const {status} = await sendRequest(ApiMethod.POST, Routes.auth.signup, { username, password }) 
       if (status === 200 ) {
         router.push('/login')
       } else {
@@ -49,6 +49,7 @@ export default function SignUpPage() {
 
     
     } catch (err) {
+      console.log(err)
       setError('username already exists!')
     } finally {
       setIsLoading(false)

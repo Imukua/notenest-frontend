@@ -24,12 +24,12 @@ export default function AboutPage() {
               The App
             </h2>
             <p className="text-slate-300 mb-4">
-              NoteNest is more than just a journal app - it's your personal space for growth, reflection, and self-discovery. 
+              NoteNest is more than just a journal app - it&apos;s your personal space for growth, reflection, and self-discovery. 
               With intuitive features and a sleek interface, NoteNest makes it easy to capture your thoughts, track your moods, 
               and gain insights into your personal journey.
             </p>
             <p className="text-slate-300">
-              Whether you're a seasoned journaler or just starting out, NoteNest adapts to your needs, 
+              Whether you&apos;re a seasoned journaler or just starting out, NoteNest adapts to your needs, 
               offering a range of tools from simple text entries to advanced analytics. 
               Your thoughts are precious - let NoteNest help you nurture them.
             </p>

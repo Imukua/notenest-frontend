@@ -5,8 +5,10 @@ import Loading from '@/components/loading/loading';
 
 
 const withAuth = (WrappedComponent: React.ComponentType) => {
+
+  //eslint-disable-next-line
   const AuthComponent = (props: any) => {
-    const {isAuthenticated,user, loading} = useAuth();
+    const {isAuthenticated, loading} = useAuth();
     const router = useRouter();
 
     useEffect(() => {

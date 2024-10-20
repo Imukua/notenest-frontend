@@ -1,8 +1,8 @@
+ /* eslint-disable */
 "use client"
-import Link from "next/link"
-import { Button, buttonVariants } from "@/components/ui/button"
+import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { BookOpen, Edit3, Lock, Star, TrendingUp } from "lucide-react"
+import { Edit3, Lock, Star, TrendingUp } from "lucide-react"
 import { Header } from "@/components/header/header"
 import { useRouter } from "next/navigation"
 import Footer from "@/components/footer/footer"
@@ -70,21 +70,21 @@ export default function HomePage() {
               <div className="flex flex-col items-center space-y-2 border-slate-800 p-4 rounded-lg">
                 <Star className="h-8 w-8 mb-2 text-yellow-500" />
                 <p className="text-sm text-slate-400 text-center">
-                  "NoteNest has transformed my daily routine. I feel more focused and self-aware."
+                  &quot;NoteNest has transformed my daily routine. I feel more focused and self-aware.&quot;
                 </p>
                 <p className="font-semibold text-blue-200">- Mutuse M.</p>
               </div>
               <div className="flex flex-col items-center space-y-2 border-slate-800 p-4 rounded-lg">
                 <Star className="h-8 w-8 mb-2 text-yellow-500" />
                 <p className="text-sm text-slate-400 text-center">
-                  "The insights feature is amazing. It's like having a personal coach."
+                  &quot;The insights feature is amazing. It&apos;s like having a personal coach.&quot;
                 </p>
                 <p className="font-semibold text-blue-200">- Effie N.</p>
               </div>
               <div className="flex flex-col items-center space-y-2 border-slate-800 p-4 rounded-lg">
                 <Star className="h-8 w-8 mb-2 text-yellow-500" />
                 <p className="text-sm text-slate-400 text-center">
-                  "Simple, secure, and effective. Give this man a job 😭."
+                  &quot;Simple, secure, and effective. Give this man a job 😭.&quot;
                 </p>
                 <p className="font-semibold text-blue-200">- Ian M.</p>
               </div>

@@ -6,10 +6,10 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { AlertCircle, Check, Upload } from "lucide-react"
+import { Check, Upload } from "lucide-react"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Header } from '@/components/header/header'
-import {ApiMethod, JournalEntry} from '@/lib/types/types'
+import {ApiMethod} from '@/lib/types/types'
 import { Routes } from '@/lib/routes/routes'
 import { useApi } from '@/hooks/useApi'
 import { useAuth } from '@/hooks/useAuth'
