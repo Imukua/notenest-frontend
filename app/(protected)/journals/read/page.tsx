@@ -12,7 +12,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import { useToast } from "@/hooks/use-toast"
 import { Header } from '@/components/header/header'
 import { useApi } from '@/hooks/useApi'
 import { ApiMethod, SingleJournalEntry } from '@/lib/types/types'
@@ -128,7 +127,7 @@ export default function JournalView() {
               <AlertCircle className="mx-auto h-12 w-12 text-red-500 mb-4" />
               <h2 className="text-2xl font-semibold mb-2">Oops! Something went wrong</h2>
               <p className="text-slate-400 mb-4">{error}</p>
-              <Button onClick={() => router.push(Routes.journals.list)}>
+              <Button onClick={() => router.push(Routes.journals.all)}>
                 Back to Journal List
               </Button>
             </motion.div>
