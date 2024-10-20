@@ -32,6 +32,7 @@ export default function JournalEntryPage() {
   const { sendProtectedRequest } = useApi();
 
 
+
   useEffect(() => {
     const fetchData = async () => {
       if (journalId !== null) {
@@ -52,6 +53,16 @@ export default function JournalEntryPage() {
     fetchData();
   }, [journalId])
 
+  useEffect(() => {
+    if (saveStatus !== 'idle') {
+      const timer = setTimeout(() => {
+        setSaveStatus('idle');
+      }, 3000); // Set the message to disappear after 3 seconds
+  
+      return () => clearTimeout(timer);
+    }
+  }, [saveStatus]);
+  
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setEntry(prev => ({ ...prev, [name]: value }))
@@ -214,6 +225,6 @@ export default function JournalEntryPage() {
           </Alert>
         )}
       </div>
-    </div>
+    </div>  
   )
 }
