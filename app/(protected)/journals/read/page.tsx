@@ -23,7 +23,7 @@ export default function JournalView() {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
   const [entry, setEntry] = useState<SingleJournalEntry | null>(null)
-  const [displayedContent, setDisplayedContent] = useState('')
+  const [displayedContent, setDisplayedContent] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const { sendProtectedRequest } = useApi()
@@ -41,6 +41,7 @@ export default function JournalView() {
           const response = await sendProtectedRequest(ApiMethod.GET, path)
           setEntry(response.data)
         } catch (err) {
+          console.log(err)
           setError("Failed to fetch journal entry. Please try again later.")
         } finally {
           setIsLoading(false)
@@ -51,19 +52,15 @@ export default function JournalView() {
     fetchData()
   }, [journalId, sendProtectedRequest])
 
+  // Variation 1: Fade-in effect
   useEffect(() => {
     if (entry) {
-      let i = 0
-      const typingEffect = setInterval(() => {
-        if (i < entry.content.length) {
-          setDisplayedContent(prev => prev + entry.content.charAt(i))
-          i++
-        } else {
-          clearInterval(typingEffect)
-        }
-      }, 20)
+      setDisplayedContent("")
+      const fadeInEffect = setTimeout(() => {
+        setDisplayedContent(entry.content)
+      }, 500)
 
-      return () => clearInterval(typingEffect)
+      return () => clearTimeout(fadeInEffect)
     }
   }, [entry])
 
@@ -81,6 +78,7 @@ export default function JournalView() {
         throw new Error("Failed to delete journal entry")
       }
     } catch (err) {
+      console.log(err)
       setIsDeleteDialogOpen(false)
     } finally {
       setIsDeleting(false)
@@ -155,10 +153,14 @@ export default function JournalView() {
               <Card className="bg-slate-800 text-slate-100 mb-8">
                 <CardContent className="p-6">
                   <div className='border-l-4 border-blue-500 pl-4'>
-                    <pre className="font-mono text-lg whitespace-pre-wrap">
+                    <motion.pre
+                      className="font-mono text-lg whitespace-pre-wrap"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.5 }}
+                    >
                       {displayedContent}
-                      <span className="animate-blink">|</span>
-                    </pre>
+                    </motion.pre>
                   </div>
                 </CardContent>
               </Card>
