@@ -1,4 +1,3 @@
-import { sign } from "crypto";
 
 export class Routes {
     public static readonly auth = {
@@ -6,7 +5,7 @@ export class Routes {
         signup: '/auth/register',
         refreshTokens: '/auth/refresh',
         logout: '/auth/logout',
-        me: '/auth/me',
+        refresh: '/auth/refresh',
         profile: '/auth/profile',
     };
     public static readonly journals = {
