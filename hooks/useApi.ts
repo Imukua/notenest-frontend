@@ -2,7 +2,7 @@ import TokenStore from "@/lib/auth/tokenstore";
 import { Routes } from "@/lib/routes/routes";
 import {ApiMethod}  from "@/lib/types/types";
 
-const apiUrl = process.env.API_BASE_URL;
+const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 const sendRefreshToken = async (): Promise<void> => {
   try {
@@ -33,7 +33,7 @@ const sendRequest = async (
   init?: RequestInit,
 ) => {
   const fetchRequest = async (token: string | null) => {
-    return fetch("http://localhost:3000" + path, {
+    return fetch(apiUrl + path, {
       method,
       ...(body && { body: JSON.stringify(body) }),
       ...init,
@@ -45,7 +45,7 @@ const sendRequest = async (
     });
   };
 
-  console.log("auth token used", authToken);
+  console.log("Base URL", apiUrl);
 
   let response = await fetchRequest(authToken ?? null);
 
