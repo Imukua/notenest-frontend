@@ -73,14 +73,18 @@ export default function JournalEntryPage() {
   }
 
   const handleSave = async () => {
-    if (!validateForm()) return
+    if (!validateForm()) {
+      console.log("Validation failed");
+      return
+
+    }
     try {
       setIsSaving(true);
       let path: string;
       let method: ApiMethod;
 
       if (journalId) {
-        path = Routes.journals + "/" + journalId;
+        path = Routes.journals.list + "/" + journalId;
         method = ApiMethod.PATCH;
       } else {
         path = Routes.journals.create;
@@ -91,6 +95,7 @@ export default function JournalEntryPage() {
       const category = entry.category;
 
       const {data,status} = await sendProtectedRequest(method, path, { title, content, category }); 
+
       
       if (status === 200 || status === 201) {
         setSaveStatus('success');
