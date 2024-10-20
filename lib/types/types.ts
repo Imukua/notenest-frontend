@@ -34,3 +34,21 @@
   };
 
 
+  export type UserType = {
+    username: string;
+    createdAt: string;
+    updatedAt: string;
+    id: string;
+    exp: number;
+    iat: number;
+  };
+  
+  export type ContextType = {
+    isAuthenticated: boolean;
+    loginUser(username: string, password: string): Promise<void>;
+    logoutUser(): void;
+    accessToken: string | null;
+    user: UserType | null;
+    loading: boolean;
+  };
+
