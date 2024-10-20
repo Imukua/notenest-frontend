@@ -50,10 +50,9 @@ export default function SignInPage() {
 
     } catch (err) {
       setError('Invalid username or password')
-    } finally {
       setIsLoading(false)
-    }
   }
+}
 
   const isFormValid = isUsernameValid && isPasswordValid
 
