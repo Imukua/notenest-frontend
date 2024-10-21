@@ -1,10 +1,10 @@
 'use client'
 
 import { useState, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion } from "framer-motion"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { BookOpen, Mail, Github, CloudLightning, Brain, Rocket, Smile, Heart, Star, Sun } from "lucide-react"
+import { Mail, Github, CloudLightning, Brain, Rocket, Smile, Heart, Star, Sun } from "lucide-react"
 import Link from "next/link"
 import { Header } from "@/components/header/header"
 
