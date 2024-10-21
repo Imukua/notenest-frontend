@@ -15,7 +15,6 @@ export const Header = () => {
   const {isAuthenticated, logoutUser} = useAuth()
   const [open, setOpen] = useState(false)
 
-
   const handleSignIn = () => {
     router.push('/login')
   }
@@ -29,165 +28,156 @@ export const Header = () => {
     setOpen(false)
   }
 
-
+  const menuItems = ["Features", "Pricing", "About"]
 
   return (
-    <header className="px-4 lg:px-6 h-16 justify-between flex items-center border-b border-slate-800">
-      <Link className="flex items-center justify-center" href={isAuthenticated? "/dashboard": "/"}>
-        <BookOpen className="h-6 w-6 text-blue-400" />
-        <motion.span 
-          className="ml-2 text-xl font-semibold bg-gradient-to-r from-blue-400 to-blue-200 bg-clip-text text-transparent"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          NoteNest
-        </motion.span>
-      </Link>
-      <div className="flex items-center">
-        {/* Search and Add Journal buttons always visible when logged in */}
-        {isAuthenticated && (
-          <div className="flex gap-4 mr-4">
-            <Link href="/journals/list">
-              <Button variant="outline" className="text-slate-300 border-slate-700 hover:bg-slate-700 hover:text-slate-50">
-                <Search className="h-4 w-4" />
-              </Button>
-            </Link>
-            <Link href="/journals/create">
-              <Button className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-slate-50">
-                <PlusCircle className="h-4 w-4" />
-              </Button>
-            </Link>
-            <Link href="/account/edit">
-              <Button variant="outline"  className="text-slate-300 border-slate-700 hover:bg-slate-700 hover:text-slate-50">
-                <User className="h-4 w-4" />
-              </Button>
-            </Link>
-            <AlertDialog open={open} onOpenChange={setOpen}>
-              <AlertDialogTrigger asChild>
-                <Button variant="outline" className="text-slate-300 border-2 border-transparent bg-gradient-to-r from-red-500 to-pink-500 bg-clip-border hover:from-red-600 hover:to-pink-600">
-                  <LogOut className="h-4 w-4" />
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent className="bg-slate-800 border-slate-700">
-                <AlertDialogHeader>
-                  <AlertDialogTitle className="text-slate-50">Confirm Logout</AlertDialogTitle>
-                  <AlertDialogDescription className="text-slate-300">
-                    Are you sure you want to log out of your account?
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel className="bg-slate-700 text-slate-50 hover:bg-slate-600">Cancel</AlertDialogCancel>
-                  <AlertDialogAction onClick={handleLogout} className="bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600">Logout</AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-          </div>
-        )}
-
-        {/* Show menu items only if not logged in */}
-        {!isAuthenticated && (
-          <nav className="hidden md:flex gap-6 mr-4">
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <Link className="text-sm font-medium hover:text-blue-400 transition-colors" href="/features">
-                Features
-              </Link>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-            >
-              <Link className="text-sm font-medium hover:text-blue-400 transition-colors" href="/pricing">
-                Pricing
-              </Link>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              <Link className="text-sm font-medium hover:text-blue-400 transition-colors" href="/about">
-                About
-              </Link>
-            </motion.div>
-          </nav>
-        )}
-        
-        {!isAuthenticated && (
-          <Button 
-            className="rounded-lg hidden md:inline-flex"
-            variant="outline"
-            onClick={handleSignIn}
-          >
-            Sign In
-          </Button>
-        )}
-
-        {/* Burger menu button: only show if not logged in */}
-        {!isAuthenticated && (
-          <Button
-            className="md:hidden"
-            variant="ghost"
-            size="icon"
-            onClick={toggleMenu}
-            aria-label="Toggle menu"
-          >
-            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </Button>
-        )}
-      </div>
-
-      {/* Mobile menu */}
-      <AnimatePresence>
-        {isMenuOpen && (
-          <motion.div
-            className="absolute top-16 left-0 right-0 bg-slate-900 shadow-lg p-4 md:hidden"
-            initial={{ opacity: 0, y: -10 }}
+    <header className="sticky top-0 z-50 bg-slate-800 text-slate-50">
+      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+        <Link className="flex items-center space-x-2" href={isAuthenticated ? "/dashboard" : "/"}>
+          <BookOpen className="h-8 w-8 text-blue-400" />
+          <motion.span 
+            className="text-xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent"
+            initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.5 }}
           >
-            {/* Conditionally show mobile menu items */}
-            {!isAuthenticated && (
-              <>
-                <Link
-                  className="block py-2 text-sm font-medium hover:text-blue-400 transition-colors"
-                  href="/features"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Features
-                </Link>
-                <Link
-                  className="block py-2 text-sm font-medium hover:text-blue-400 transition-colors"
-                  href="/pricing"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Pricing
-                </Link>
-                <Link
-                  className="block py-2 text-sm font-medium hover:text-blue-400 transition-colors"
-                  href="/about"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  About
-                </Link>
-                <Button 
-                  className="w-full mt-4 rounded-lg"
-                  variant="outline"
-                  onClick={() => {
-                    handleSignIn()
-                    setIsMenuOpen(false)
-                  }}
-                >
-                  Sign In
+            NoteNest
+          </motion.span>
+        </Link>
+        <div className="flex items-center space-x-4">
+          {isAuthenticated ? (
+            <>
+              <Link href="/journals/list">
+                <Button variant="ghost" size="icon" className="text-slate-300 hover:text-blue-400">
+                  <Search className="h-5 w-5" />
                 </Button>
-              </>
-            )}
+              </Link>
+              <Link href="/journals/create">
+                <Button size="icon" className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white">
+                  <PlusCircle className="h-5 w-5" />
+                </Button>
+              </Link>
+              <Link href="/account/edit">
+                <Button variant="ghost" size="icon" className="text-slate-300 hover:text-blue-400">
+                  <User className="h-5 w-5" />
+                </Button>
+              </Link>
+              <AlertDialog open={open} onOpenChange={setOpen}>
+                <AlertDialogTrigger asChild>
+                  <Button variant="ghost" size="icon" className="text-slate-300 hover:text-red-400">
+                    <LogOut className="h-5 w-5" />
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent className="bg-slate-800 border-slate-700">
+                  <AlertDialogHeader>
+                    <AlertDialogTitle className="text-slate-50">Confirm Logout</AlertDialogTitle>
+                    <AlertDialogDescription className="text-slate-300">
+                      Are you sure you want to log out of your account?
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel className="bg-slate-700 text-slate-50 hover:bg-slate-600">Cancel</AlertDialogCancel>
+                    <AlertDialogAction onClick={handleLogout} className="bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600">Logout</AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </>
+          ) : (
+            <>
+              <nav className="hidden md:flex space-x-6">
+                {menuItems.map((item, index) => (
+                  <motion.div
+                    key={item}
+                    className="relative"
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                  >
+                    <Link className="text-sm font-medium hover:text-blue-400 transition-colors" href={`/${item.toLowerCase()}`}>
+                      {item}
+                    </Link>
+                    <motion.div
+                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-400"
+                      initial={{ scaleX: 0 }}
+                      whileHover={{ scaleX: 1 }}
+                      transition={{ duration: 0.2 }}
+                    />
+                  </motion.div>
+                ))}
+              </nav>
+              <Button 
+                className="hidden md:inline-flex"
+                variant="outline"
+                onClick={handleSignIn}
+              >
+                Sign In
+              </Button>
+              <Button
+                className="md:hidden"
+                variant="ghost"
+                size="icon"
+                onClick={toggleMenu}
+                aria-label="Toggle menu"
+              >
+                {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              </Button>
+            </>
+          )}
+        </div>
+      </div>
+      <AnimatePresence>
+        {isMenuOpen && !isAuthenticated && (
+          <motion.div
+            className="fixed inset-0 bg-slate-900 z-50 flex flex-col items-center justify-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <Button
+              className="absolute top-4 right-4"
+              variant="ghost"
+              size="icon"
+              onClick={toggleMenu}
+              aria-label="Close menu"
+            >
+              <X className="h-6 w-6" />
+            </Button>
+            {menuItems.map((item, index) => (
+              <motion.div
+                key={item}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 20 }}
+                transition={{ duration: 0.3, delay: index * 0.1 }}
+              >
+                <Link
+                  className="text-2xl font-bold mb-6 hover:text-blue-400 transition-colors"
+                  href={`/${item.toLowerCase()}`}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {item}
+                </Link>
+              </motion.div>
+            ))}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.3, delay: menuItems.length * 0.1 }}
+            >
+              <Button 
+                className="mt-8"
+                variant="outline"
+                size="lg"
+                onClick={() => {
+                  handleSignIn()
+                  setIsMenuOpen(false)
+                }}
+              >
+                Sign In
+              </Button>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
