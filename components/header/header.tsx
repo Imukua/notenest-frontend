@@ -31,7 +31,7 @@ export const Header = () => {
   const menuItems = ["Features", "Pricing", "About"]
 
   return (
-    <header className="sticky top-0 z-50 bg-slate-800 text-slate-50">
+    <header className="sticky top-0 z-50 border-b border-slate-800 text-slate-50">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link className="flex items-center space-x-2" href={isAuthenticated ? "/dashboard" : "/"}>
           <BookOpen className="h-8 w-8 text-blue-400" />
