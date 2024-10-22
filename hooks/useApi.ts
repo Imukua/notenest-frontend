@@ -2,7 +2,7 @@ import TokenStore from "@/lib/auth/tokenstore";
 import { Routes } from "@/lib/routes/routes";
 import {ApiMethod}  from "@/lib/types/types";
 
-const apiUrl = 'https://notenestd-dev.vercel.app'; // Temporary hardcoding
+const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 const sendRefreshToken = async (): Promise<void> => {
   try {
@@ -33,9 +33,6 @@ const sendRequest = async (
   init?: RequestInit,
 ) => {
 
-  console.log("API base url: ",apiUrl);
-  console.log("Path used: ",path);
-  console.log("path + Apiurl: ",apiUrl + path);
   const fetchRequest = async (token: string | null) => {
     return fetch(apiUrl + path, {
       method,
