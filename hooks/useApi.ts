@@ -32,6 +32,10 @@ const sendRequest = async (
   authToken?: string | null,
   init?: RequestInit,
 ) => {
+
+  console.log("API base url: ",apiUrl);
+  console.log("Path used: ",path);
+  console.log("path + Apiurl: ",apiUrl + path);
   const fetchRequest = async (token: string | null) => {
     return fetch(apiUrl + path, {
       method,
@@ -47,9 +51,6 @@ const sendRequest = async (
 
 
   let response = await fetchRequest(authToken ?? null);
-  console.log("RESPONSE AFTER FETCH: ",response);
-  console.log("API base url: ",apiUrl);
-  console.log("Path used: ",path);
 
   if (response.status === 401) {
     try {
