@@ -47,6 +47,7 @@ const sendRequest = async (
 
 
   let response = await fetchRequest(authToken ?? null);
+  console.log("RESPONSE AFTER FETCH: ",response);
 
   if (response.status === 401) {
     try {

@@ -45,6 +45,7 @@ export default function SignInPage() {
         TokenStore.setRefreshToken(data.refreshToken)
         router.push('/dashboard')
       }else{
+        console.log("respose status: ",status)
         throw new Error('Failed to sign in')
       }
     } catch (err) {
