@@ -48,6 +48,8 @@ const sendRequest = async (
 
   let response = await fetchRequest(authToken ?? null);
   console.log("RESPONSE AFTER FETCH: ",response);
+  console.log("API base url: ",apiUrl);
+  console.log("Path used: ",path);
 
   if (response.status === 401) {
     try {
