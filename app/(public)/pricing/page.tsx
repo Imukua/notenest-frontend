@@ -2,18 +2,20 @@
 
 import { useState } from 'react'
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Check, BookOpen, Feather, Zap } from "lucide-react"
+import { Card, CardContent } from "@/components/ui/card"
+import { BookOpen, Feather, Zap, ChevronRight } from "lucide-react"
 import { Header } from '@/components/header/header'
+import { motion, AnimatePresence } from 'framer-motion'
 
 export default function PricingPage() {
-  const [highlightedTier, setHighlightedTier] = useState<string | null>(null)
+  const [selectedTier, setSelectedTier] = useState(0)
 
   const tiers = [
     {
       name: "Basic",
-      price: "$4.99",
-      description: "Perfect for casual journalers",
+      price: 4.99,
+      icon: BookOpen,
+      color: "from-green-400 to-cyan-500",
       features: [
         "Unlimited text entries",
         "Basic text formatting",
@@ -21,16 +23,13 @@ export default function PricingPage() {
         "1 GB storage",
         "Access on one device",
       ],
-      cta: "Start Basic",
-      icon: BookOpen,
-      gradient: "from-green-400 to-cyan-500",
     },
     {
       name: "Pro",
-      price: "$9.99",
-      description: "For dedicated writers and self-improvers",
+      price: 9.99,
+      icon: Feather,
+      color: "from-purple-400 to-pink-500",
       features: [
-        "All Basic features",
         "Rich text formatting",
         "Mood tracking",
         "Custom tags",
@@ -38,17 +37,13 @@ export default function PricingPage() {
         "Access on up to 3 devices",
         "Priority support",
       ],
-      cta: "Go Pro",
-      highlighted: true,
-      icon: Feather,
-      gradient: "from-purple-400 to-pink-500",
     },
     {
       name: "Premium",
-      price: "$14.99",
-      description: "For power users and professionals",
+      price: 14.99,
+      icon: Zap,
+      color: "from-yellow-400 to-orange-500",
       features: [
-        "All Pro features",
         "Unlimited storage",
         "AI-powered insights",
         "Collaboration features",
@@ -56,74 +51,80 @@ export default function PricingPage() {
         "Access on unlimited devices",
         "24/7 premium support",
       ],
-      cta: "Get Premium",
-      icon: Zap,
-      gradient: "from-yellow-400 to-orange-500",
     },
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 text-slate-50">
-        <Header />
-      <div className="max-w-7xl mx-auto mt-10">
-        <div className="text-center">
-          <h1 className="text-4xl font-extrabold sm:text-5xl md:text-6xl">
-            Choose Your Perfect Plan
-          </h1>
-          <p className="mt-3 max-w-md mx-auto text-xl text-slate-300 sm:text-2xl md:mt-5 md:max-w-3xl">
-            Select the plan that best fits your journaling needs
-          </p>
+    <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 text-slate-100 px-4 sm:px-6 lg:px-8">
+      <Header />
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="max-w-4xl mx-auto mt-16 pb-16"
+      >
+        <h1 className="text-4xl font-extrabold text-center text-cyan-400 mb-8">
+          Your Journal Journey
+        </h1>
+
+        <div className="relative">
+          <div className="absolute top-1/2 left-0 right-0 h-1 bg-slate-700 -translate-y-1/2"></div>
+          <div className="relative z-10 flex justify-between">
+            {tiers.map((tier, index) => (
+              <motion.div
+                key={tier.name}
+                className={`flex flex-col items-center cursor-pointer ${
+                  index <= selectedTier ? 'opacity-100' : 'opacity-50'
+                }`}
+                onClick={() => setSelectedTier(index)}
+                whileHover={{ scale: 1.05 }}
+              >
+                <div className={`w-12 h-12 rounded-full flex items-center justify-center bg-gradient-to-r ${tier.color}`}>
+                  <tier.icon className="w-6 h-6 text-slate-900" />
+                </div>
+                <span className="mt-2 font-semibold">{tier.name}</span>
+              </motion.div>
+            ))}
+          </div>
         </div>
 
-        <div className="mt-16 space-y-12 lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-x-8">
-          {tiers.map((tier) => (
-            <Card 
-              key={tier.name}
-              className={`flex flex-col justify-between transition-all duration-300 ${
-                (highlightedTier === tier.name || (!highlightedTier && tier.highlighted))
-                  ? 'border-cyan-500 shadow-cyan-500/50 shadow-lg scale-105' 
-                  : 'border-slate-700 hover:border-slate-500'
-              } bg-slate-800 cursor-pointer`}
-              onClick={() => setHighlightedTier(tier.name)}
-            >
-              <CardHeader>
-                <div className="flex justify-between items-center">
-                  <CardTitle className={`text-2xl font-bold bg-gradient-to-r ${tier.gradient} bg-clip-text text-transparent`}>
-                    {tier.name}
-                  </CardTitle>
-                  <tier.icon className="w-8 h-8 text-cyan-400" />
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={selectedTier}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+            className="mt-12"
+          >
+            <Card className="bg-slate-800 border-slate-700">
+              <CardContent className="p-6">
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-2xl font-bold text-cyan-400">{tiers[selectedTier].name}</h2>
+                  <div className="text-3xl font-bold text-cyan-400">${tiers[selectedTier].price}<span className="text-lg text-slate-400">/mo</span></div>
                 </div>
-                <CardDescription className="text-slate-400">{tier.description}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="mt-4 flex items-baseline text-5xl font-extrabold">
-                  <span className="text-cyan-400">{tier.price}</span>
-                  <span className="ml-1 text-2xl font-medium text-slate-400">/month</span>
-                </div>
-                <ul className="mt-6 space-y-4">
-                  {tier.features.map((feature) => (
-                    <li key={feature} className="flex">
-                      <Check className="flex-shrink-0 w-6 h-6 text-cyan-500" />
-                      <span className="ml-3 text-slate-300">{feature}</span>
-                    </li>
+                <ul className="space-y-2 mb-6">
+                  {tiers[selectedTier].features.map((feature, index) => (
+                    <motion.li
+                      key={index}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className="flex items-center"
+                    >
+                      <ChevronRight className="w-4 h-4 text-cyan-400 mr-2" />
+                      <span>{feature}</span>
+                    </motion.li>
                   ))}
                 </ul>
-              </CardContent>
-              <CardFooter>
-                <Button 
-                  className={`w-full ${
-                    (highlightedTier === tier.name || (!highlightedTier && tier.highlighted))
-                      ? 'bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600'
-                      : 'bg-slate-700 hover:bg-slate-600'
-                  }`}
-                >
-                  {tier.cta}
+                <Button className={`w-full bg-gradient-to-r ${tiers[selectedTier].color} text-slate-900 hover:opacity-90 transition-opacity duration-300`}>
+                  Start your {tiers[selectedTier].name} journey
                 </Button>
-              </CardFooter>
+              </CardContent>
             </Card>
-          ))}
-        </div>
-      </div>
+          </motion.div>
+        </AnimatePresence>
+      </motion.div>
     </div>
   )
 }
