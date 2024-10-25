@@ -40,7 +40,7 @@ export default function SignInPage() {
     try {
       const {data,status} = await sendRequest(ApiMethod.POST,Routes.auth.login,{username,password})
 
-      if (status === 200 ){
+      if (status === 200 || status === 201 ){
         TokenStore.setAccessToken(data.accessToken)
         TokenStore.setRefreshToken(data.refreshToken)
         router.push('/dashboard')
