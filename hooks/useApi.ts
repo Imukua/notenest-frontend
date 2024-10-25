@@ -2,7 +2,7 @@ import TokenStore from "@/lib/auth/tokenstore";
 import { Routes } from "@/lib/routes/routes";
 import {ApiMethod}  from "@/lib/types/types";
 
-const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 
 const sendRefreshToken = async (): Promise<void> => {
   try {
@@ -32,7 +32,13 @@ const sendRequest = async (
   authToken?: string | null,
   init?: RequestInit,
 ) => {
+
   const fetchRequest = async (token: string | null) => {
+    const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+    const NODE_ENV = process.env.NODE_ENV;
+
+    console.log('API URL:', apiUrl);
+    console.log('NODE ENV:', NODE_ENV);
     return fetch(apiUrl + path, {
       method,
       ...(body && { body: JSON.stringify(body) }),
