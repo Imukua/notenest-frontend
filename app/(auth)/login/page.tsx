@@ -40,7 +40,7 @@ export default function SignInPage() {
     try {
       const {data,status} = await sendRequest(ApiMethod.POST,Routes.auth.login,{username,password})
 
-      if (status === 201){
+      if (status === 200 ){
         TokenStore.setAccessToken(data.accessToken)
         TokenStore.setRefreshToken(data.refreshToken)
         router.push('/dashboard')
@@ -48,7 +48,6 @@ export default function SignInPage() {
         throw new Error('Failed to sign in')
       }
     } catch (err) {
-      console.log(err)
       setError('Invalid username or password')
       setIsLoading(false)
     }
